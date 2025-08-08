@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS Audio Test</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <!-- Main container for the app -->
+    <div class="bg-white p-8 rounded-2xl shadow-xl text-center w-full max-w-sm">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">iOS Audio Test</h1>
+        <p class="text-gray-600 mb-6">Tap the button to play the sound.</p>
+        
+        <!-- The audio element with your local file path. It will not autoplay. -->
+        <!-- You can replace "my_custom_sound.mp3" with the name of your file. -->
+        <audio id="my-audio" src="./Audio/Ay-Bay-Bay.mp3"></audio>
+
+        <!-- The button that triggers playback -->
+        <button id="play-btn" class="bg-indigo-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-indigo-700 transition-colors transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 mx-auto">
+            <i class="fas fa-volume-up"></i> Play Sound
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const playButton = document.getElementById('play-btn');
+            const audioElement = document.getElementById('my-audio');
+            
+            // A simple message box function to give feedback to the user
+            const showMessage = (text) => {
+                const messageBox = document.createElement('div');
+                messageBox.className = "fixed bottom-4 right-4 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg z-50 transition-all duration-300 transform opacity-0";
+                messageBox.textContent = text;
+                document.body.appendChild(messageBox);
+                
+                // Show the message
+                setTimeout(() => {
+                    messageBox.style.opacity = '1';
+                }, 10);
+
+                // Hide the message after 3 seconds
+                setTimeout(() => {
+                    messageBox.style.opacity = '0';
+                    setTimeout(() => messageBox.remove(), 300);
+                }, 3000);
+            };
+
+            // Add a click listener to the button
+            playButton.addEventListener('click', () => {
+                // The crucial part: we call .play() directly from a user interaction.
+                // This satisfies iOS's requirement and should work.
+                audioElement.play().then(() => {
+                    showMessage("Audio played successfully!");
+                }).catch(error => {
+                    // This error is key for debugging.
+                    showMessage(`Error: Audio playback failed. Check the file path and browser permissions. Details: ${error.message}`);
+                    console.error("Audio playback error:", error);
+                });
+            });
+
+            // Add an error listener to the audio element in case the file can't be loaded at all.
+            audioElement.onerror = () => {
+                showMessage("Error loading audio file. Check the file path and name.");
+            };
+        });
+    </script>
+</body>
+</html>
