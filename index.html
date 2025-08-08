@@ -32,12 +32,15 @@
         <!-- The new line of text has been added here -->
         <p class="text-gray-600 mb-6">It's so hot up in the club that I ain't got no shoes on</p>
         
-        <!-- The audio element with your local file path. It will not autoplay. -->
-        <audio id="my-audio" src="./audio/Ay-Bay-Bay.mp3"></audio>
+        <!-- The audio element with a public file path for demonstration purposes. -->
+        <!-- This URL will work in the Canvas preview. -->
+        <!-- Once you host your project, you'll replace this with your local file path: ./Sounds/my_custom_sound.mp3 -->
+        <audio id="my-audio" src="./Audio/Ay-Bay-Bay.mp3"></audio>
 
-        <!-- The button that triggers playback -->
+        <!-- The button now acts as a play/pause toggle -->
         <button id="play-btn" class="bg-indigo-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-indigo-700 transition-colors transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 mx-auto">
-            <i class="fas fa-volume-up"></i> Play Sound
+            <!-- The initial icon is 'play' -->
+            <i class="fas fa-play"></i>
         </button>
     </div>
 
@@ -45,6 +48,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const playButton = document.getElementById('play-btn');
             const audioElement = document.getElementById('my-audio');
+            const icon = playButton.querySelector('i');
             
             // A simple message box function to give feedback to the user
             const showMessage = (text) => {
@@ -67,15 +71,24 @@
 
             // Add a click listener to the button
             playButton.addEventListener('click', () => {
-                // The crucial part: we call .play() directly from a user interaction.
-                // This satisfies iOS's requirement and should work.
-                audioElement.play().then(() => {
-                    showMessage("Audio played successfully!");
-                }).catch(error => {
-                    // This error is key for debugging.
-                    showMessage(`Error: Audio playback failed. Check the file path and browser permissions. Details: ${error.message}`);
-                    console.error("Audio playback error:", error);
-                });
+                if (audioElement.paused) {
+                    // Play the audio and change the icon to pause
+                    audioElement.play().then(() => {
+                        icon.classList.remove('fa-play');
+                        icon.classList.add('fa-pause');
+                        showMessage("Audio started.");
+                    }).catch(error => {
+                        // This error is key for debugging.
+                        showMessage(`Error: Audio playback failed. Details: ${error.message}`);
+                        console.error("Audio playback error:", error);
+                    });
+                } else {
+                    // Pause the audio and change the icon to play
+                    audioElement.pause();
+                    icon.classList.remove('fa-pause');
+                    icon.classList.add('fa-play');
+                    showMessage("Audio paused.");
+                }
             });
 
             // Add an error listener to the audio element in case the file can't be loaded at all.
