@@ -23,12 +23,17 @@
     <!-- Main container for the app -->
     <div class="bg-white p-8 rounded-2xl shadow-xl text-center w-full max-w-sm">
         <h1 class="text-3xl font-bold text-gray-800 mb-4">iOS Audio Test</h1>
+        <!-- The video tag for your MP4 file -->
+        <video class="w-48 h-auto rounded-xl shadow-md mb-6 mx-auto" autoplay loop muted playsinline>
+            <!-- To use your own file, replace the path below with the path to your .mp4 file. -->
+            <source src="./video/ay-bay-bay.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
         <!-- The new line of text has been added here -->
         <p class="text-gray-600 mb-6">It's so hot up in the club that I ain't got no shoes on</p>
         
         <!-- The audio element with your local file path. It will not autoplay. -->
-        <!-- You can replace "my_custom_sound.mp3" with the name of your file. -->
-        <audio id="my-audio" src="./Sounds/my_custom_sound.mp3"></audio>
+        <audio id="my-audio" src="./audio/Ay-Bay-Bay.mp3"></audio>
 
         <!-- The button that triggers playback -->
         <button id="play-btn" class="bg-indigo-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-indigo-700 transition-colors transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 mx-auto">
